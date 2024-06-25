@@ -23,7 +23,7 @@ Este projeto é um simulador de banco desenvolvido em Java como exercício prát
 
 ## Objetivos do Projeto
 
-- **Aprender POO:** Aplicar conceitos fundamentais como encapsulamento, herança e polimorfismo.
+- **Aprender POO:** Aprender e aplicar conceitos fundamentais.
 - **Desenvolver a Lógica Bancária:** Implementar funcionalidades de um banco real de forma simplificada.
 - **Interação com o Usuário:** Criar um menu interativo para que o usuário possa realizar operações bancárias através do console.
 
