@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Conta {
@@ -6,119 +7,93 @@ public class Conta {
     private String dono;
     private float saldo;
     private boolean status = false;
+    private float mensalidade;
     Scanner scan = new Scanner(System.in);
 
-    public void abrirConta() {
-        if (this.status) {
-            System.out.println("Conta já está aberta.");
-        } else {
-            System.out.println("CRIAR CONTA");
-            System.out.print("Nome: ");
-            this.dono = scan.nextLine();
-            System.out.print("Número da conta: ");
-            this.numconta = scan.nextLine();
-            System.out.print("Tipo da conta CC (conta corrente) ou CP (conta poupança): ");
-            while (true) {
-                this.tipo = scan.nextLine();
-                if (this.tipo.equals("CC") || this.tipo.equals("CP")) {
-                    if (this.tipo.equals("CC")) {
-                        this.saldo = 50f;
-                    } else {
-                        this.saldo = 150f;
-                    }
-                    System.out.println("Conta aberta com sucesso!");
-                    this.status = true;
-                    break;
-                } else {
-                    System.out.print("Por favor, selecione um tipo de conta válido (CC ou CP): ");
-                }
+    public Conta() {
+        setSaldo(0);
+        setStatus(false);
+    }
+
+    public void abrirConta(String dono, String numero, String tipo) {
+        setDono(dono);
+        setNumconta(numero);
+        setTipo(tipo);
+        while (true) {
+            if (getTipo().equals("CC") || getTipo().equals("CP")) {
+                setStatus(true);
+                setTipo(tipo);
+                break;
+            } else {
+                System.out.println("Por favor, selecione um tipo de conta valido (CC ou CP):");
+                setTipo(scan.next());
             }
         }
     }
 
     public void fecharConta() {
-        if (!this.status) {
-            System.out.println("Por favor, crie ou reative a conta para realizar essa ação.");
+        if (!isStatus()) {
+            System.out.print("Por favor, crie ou reative a conta para realizar essa acao.");
         } else {
-            if (this.saldo > 0 || this.saldo < 0) {
-                System.out.println("Por favor, retire todo o saldo ou pague suas pendências para fechar sua conta.");
+            if (getSaldo() != 0) {
+                System.out.println("Por favor, retire todo o saldo ou pague suas pendencias para fechar sua conta.");
             } else {
                 System.out.println("Conta fechada com sucesso.");
-                this.status = false;
+                setStatus(false);
             }
         }
     }
 
-    public void fazerDeposito() {
-        if (!this.status) {
-            System.out.println("Por favor, crie ou reative a conta para realizar essa ação.");
-        } else {
-            System.out.println("REALIZAR DEPÓSITO");
-            System.out.print("Informe o valor do depósito: ");
-            while (true) {
-                float deposito = scan.nextFloat();
-                if (deposito < 0) {
-                    System.out.println("Por favor, insira um valor válido.");
-                } else {
-                    System.out.println("Depósito realizado com sucesso.");
-                    this.saldo += deposito;
-                    break;
-                }
+    public void fazerDeposito(float valor) {
+        while (true) {
+            if (valor > 0) {
+                System.out.println("Deposito realizado com sucesso.");
+                setSaldo(getSaldo() + valor);
+                break;
+            } else {
+                System.out.println("Por favor, insira um valor valido.");
+                valor = scan.nextFloat();
             }
         }
     }
 
-    public void fazerSaque() {
-        if (!this.status) {
-            System.out.println("Por favor, crie ou reative a conta para realizar essa ação.");
-        } else {
-            System.out.println("REALIZAR SAQUE");
-            System.out.print("Informe o valor do saque: ");
-            float saque = scan.nextFloat();
-            while (true) {
-                if (saque > this.saldo) {
-                    System.out.print("Valor inválido, informe novamente: ");
-                    saque = scan.nextFloat();
-                } else {
-                    System.out.println("Saque realizado com sucesso!");
-                    this.saldo -= saque;
-                    break;
-                }
+    public void fazerSaque(float valor) {
+        while (true) {
+            if (valor > 0 && valor <= getSaldo()) {
+                System.out.println("Saque realizado com sucesso.");
+                setSaldo(getSaldo() - valor);
+                break;
+            } else if (valor > getSaldo()) {
+                System.out.println("Saldo insuficiente.");
+                break;
+            } else {
+                System.out.println("Por favor, insira um valor valido.");
+                valor = scan.nextFloat();
             }
         }
     }
 
     public void pagarMensal() {
-        if (!this.status) {
-            System.out.println("Por favor, crie ou reative a conta para realizar essa ação.");
-        }
-        else {
-                float valorm =this.tipo.equals("CC")?12:20;
-                System.out.println("Para pagar sua mensalidade, será descontado um valor de R$"+valorm+" da sua conta.");
-                System.out.print("Deseja pagar agora? 1(sim) 2(não): ");
-                int opc = scan.nextInt();
-                if (opc == 1) {
-                    System.out.println("Mensalidade paga com sucesso.");
-                    this.saldo -= valorm;
-                }
-                else {
-                    System.out.println("Mensalidade adiada.");
-                }
+        float valor = getTipo().equals("CC") ? 12 : 20;
+        System.out.println("Para pagar sua mensalidade, sera descontado um valor de R$" + valor + " da sua conta.");
+        System.out.print("Deseja pagar agora? 1(sim) 2(nao): ");
+        int opc = scan.nextInt();
+        if (opc == 1) {
+            System.out.println("Mensalidade paga com sucesso.");
+            this.saldo -= valor;
+        } else {
+            System.out.println("Mensalidade adiada.");
         }
     }
 
     public void info() {
-        if (!this.status) {
-            System.out.println("Por favor, crie ou reative a conta para realizar essa ação.");
-        } else {
-            System.out.println("Informações da conta");
-            System.out.println("Dono da conta: " + this.getDono());
-            System.out.println("Número da conta: " + this.getNumconta());
-            System.out.println("Tipo da conta: " + this.getTipo());
-            System.out.println("Saldo da conta: " + this.getSaldo());
-            String status = this.status ? "ativa" : "desativada";
-            System.out.println("Status da conta: " + status);
-        }
+        System.out.println("Informacoes da conta");
+        System.out.println("Dono da conta: " + getDono());
+        System.out.println("Numero da conta: " + getNumconta());
+        System.out.println("Tipo da conta: " + getTipo());
+        System.out.println("Saldo da conta: " + getSaldo());
+        String status = this.status ? "ativa" : "desativada";
+        System.out.println("Status da conta: " + status);
     }
 
     public String getNumconta() {
@@ -139,6 +114,14 @@ public class Conta {
 
     public boolean isStatus() {
         return status;
+    }
+
+    public float getMensalidade() {
+        return mensalidade;
+    }
+
+    public void setMensalidade(float mensalidade) {
+        this.mensalidade = mensalidade;
     }
 
     public void setNumconta(String numconta) {
