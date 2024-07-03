@@ -2,7 +2,9 @@
 # Simulador de Banco em Java
 
 Este projeto é um simulador de banco desenvolvido em Java como exercício prático para aprender Programação Orientada a Objetos (POO). A aplicação permite aos usuários gerenciar suas contas bancárias de forma simples e intuitiva.
-[![Watch the video](https://raw.githubusercontent.com/EduardoTartas /BancoPOO/main/assets/thumbnail.png)](https://raw.githubusercontent.com/EduardoTartas/BancoPOO/main/assets/video.mp4)
+
+[![Watch the video](https://raw.githubusercontent.com/EduardoTartas/BancoPOO/main/assets/thumbnail.png)](https://raw.githubusercontent.com/EduardoTartas/BancoPOO/main/assets/video.mp4)
+
 
 
 
